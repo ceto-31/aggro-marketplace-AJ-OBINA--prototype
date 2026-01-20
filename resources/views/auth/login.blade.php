@@ -129,6 +129,7 @@
 <body>
     <div class="login-container">
         <div class="login-header">
+            <img src="{{ asset('spup final logo.png') }}" alt="SPUP Logo" style="height: 80px; margin-bottom: 1rem;">
             <h1>Login</h1>
             <p>SPUP Agro Marketplace</p>
         </div>

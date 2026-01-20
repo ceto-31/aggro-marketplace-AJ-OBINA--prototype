@@ -255,7 +255,10 @@
     @if(auth()->check())
     <nav class="navbar">
         <div class="navbar-container">
-            <a href="{{ url('/') }}" class="navbar-brand">SPUP Agro Marketplace</a>
+            <a href="{{ url('/') }}" class="navbar-brand" style="display: flex; align-items: center; gap: 1rem;">
+                <img src="{{ asset('spup final logo.png') }}" alt="SPUP Logo" style="height: 40px;">
+                <span>SPUP Agro Marketplace</span>
+            </a>
             <div class="navbar-menu">
                 @if(auth()->user()->isAdmin())
                     <a href="{{ route('admin.dashboard') }}" class="navbar-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">Dashboard</a>
