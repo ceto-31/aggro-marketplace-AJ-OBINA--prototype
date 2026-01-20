@@ -31,6 +31,9 @@
         .left-side img {
             width: 120px;
             margin-bottom: 2rem;
+            background-color: white;
+            padding: 1rem;
+            border-radius: 50%;
         }
 
         .left-side h1 {
