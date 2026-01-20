@@ -140,4 +140,38 @@ class AdminController extends Controller
         $logs = SystemLog::with('user')->latest()->paginate(50);
         return view('admin.logs', compact('logs'));
     }
+
+    // Profile Management
+    public function profile()
+    {
+        return view('admin.profile');
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'current_password' => 'nullable|string',
+            'new_password' => 'nullable|string|min:8|confirmed',
+        ]);
+
+        $user = auth()->user();
+
+        // Update name
+        $user->name = $request->name;
+
+        // Update password if provided
+        if ($request->filled('current_password') && $request->filled('new_password')) {
+            if (!Hash::check($request->current_password, $user->password)) {
+                return back()->withErrors(['current_password' => 'Current password is incorrect']);
+            }
+            $user->password = Hash::make($request->new_password);
+        }
+
+        $user->save();
+
+        SystemLog::createLog('update_profile', 'Updated admin profile', 'admin');
+
+        return back()->with('success', 'Profile updated successfully');
+    }
 }

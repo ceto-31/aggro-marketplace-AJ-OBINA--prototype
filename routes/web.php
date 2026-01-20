@@ -45,6 +45,10 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/reports/buyers', [AdminController::class, 'buyerReport'])->name('reports.buyers');
     Route::get('/reports/pricing', [AdminController::class, 'pricingReport'])->name('reports.pricing');
     
+    // Profile
+    Route::get('/profile', [AdminController::class, 'profile'])->name('profile');
+    Route::put('/profile', [AdminController::class, 'updateProfile'])->name('profile.update');
+    
     // Listings & Transactions
     Route::get('/listings', [AdminController::class, 'listings'])->name('listings');
     Route::get('/transactions', [AdminController::class, 'transactions'])->name('transactions');
@@ -94,5 +98,9 @@ Route::middleware(['auth', 'role:buyer'])->prefix('buyer')->name('buyer.')->grou
     // Feedback
     Route::get('/orders/{id}/feedback', [BuyerController::class, 'submitFeedbackForm'])->name('feedback');
     Route::post('/orders/{id}/feedback', [BuyerController::class, 'submitFeedback'])->name('feedback.submit');
+    
+    // Profile
+    Route::get('/profile', [BuyerController::class, 'profile'])->name('profile');
+    Route::put('/profile', [BuyerController::class, 'updateProfile'])->name('profile.update');
 });
 

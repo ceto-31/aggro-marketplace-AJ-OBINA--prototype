@@ -266,6 +266,7 @@
                     <a href="{{ route('admin.listings') }}" class="navbar-link {{ request()->routeIs('admin.listings') ? 'active' : '' }}">Listings</a>
                     <a href="{{ route('admin.transactions') }}" class="navbar-link {{ request()->routeIs('admin.transactions') ? 'active' : '' }}">Transactions</a>
                     <a href="{{ route('admin.reports') }}" class="navbar-link {{ request()->routeIs('admin.reports*') ? 'active' : '' }}">Reports</a>
+                    <a href="{{ route('admin.profile') }}" class="navbar-link {{ request()->routeIs('admin.profile') ? 'active' : '' }}">Profile</a>
                 @elseif(auth()->user()->isSeller())
                     <a href="{{ route('seller.dashboard') }}" class="navbar-link {{ request()->routeIs('seller.dashboard') ? 'active' : '' }}">Dashboard</a>
                     <a href="{{ route('seller.listings') }}" class="navbar-link {{ request()->routeIs('seller.listings*') ? 'active' : '' }}">My Listings</a>
@@ -275,6 +276,7 @@
                     <a href="{{ route('buyer.dashboard') }}" class="navbar-link {{ request()->routeIs('buyer.dashboard') ? 'active' : '' }}">Dashboard</a>
                     <a href="{{ route('buyer.browse') }}" class="navbar-link {{ request()->routeIs('buyer.browse') ? 'active' : '' }}">Browse Rice</a>
                     <a href="{{ route('buyer.orders') }}" class="navbar-link {{ request()->routeIs('buyer.orders*') ? 'active' : '' }}">My Orders</a>
+                    <a href="{{ route('buyer.profile') }}" class="navbar-link {{ request()->routeIs('buyer.profile') ? 'active' : '' }}">Profile</a>
                 @endif
                 <form action="{{ route('logout') }}" method="POST" style="display: inline;">
                     @csrf

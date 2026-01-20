@@ -176,4 +176,37 @@ class BuyerController extends Controller
 
         return redirect()->route('buyer.orders')->with('success', 'Thank you for your feedback!');
     }
+
+    // Profile Management
+    public function profile()
+    {
+        $profile = auth()->user()->profile ?? new \App\Models\SellerBuyerProfile();
+        return view('buyer.profile', compact('profile'));
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $request->validate([
+            'phone' => 'nullable|string|max:20',
+            'barangay' => 'required|string|max:255',
+            'municipality' => 'required|string|max:255',
+            'province' => 'nullable|string|max:255',
+            'address' => 'nullable|string',
+        ]);
+
+        $profile = auth()->user()->profile;
+
+        if (!$profile) {
+            $profile = new \App\Models\SellerBuyerProfile();
+            $profile->user_id = auth()->id();
+            $profile->user_type = 'buyer';
+        }
+
+        $profile->fill($request->all());
+        $profile->save();
+
+        SystemLog::createLog('update_profile', 'Updated buyer profile', 'buyer');
+
+        return back()->with('success', 'Profile updated successfully');
+    }
 }
