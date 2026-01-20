@@ -17,7 +17,7 @@ class BuyerController extends Controller
         
         $stats = [
             'total_orders' => $buyer->purchasedOrders()->count(),
-            'pending_orders' => $buyer->purchasedOrders()->where('status', 'pending')->count(),
+            'pending_orders' => $buyer->purchasedOrders()->whereIn('status', ['pending', 'confirmed', 'preparing', 'delivered'])->count(),
             'completed_orders' => $buyer->purchasedOrders()->where('status', 'completed')->count(),
         ];
 

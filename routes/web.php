@@ -66,7 +66,11 @@ Route::middleware(['auth', 'role:seller'])->prefix('seller')->name('seller.')->g
     // Orders
     Route::get('/orders', [SellerController::class, 'orders'])->name('orders');
     Route::get('/orders/{id}', [SellerController::class, 'viewOrder'])->name('orders.view');
+    Route::post('/orders/{id}/confirm', [SellerController::class, 'confirmOrder'])->name('orders.confirm');
+    Route::post('/orders/{id}/prepare', [SellerController::class, 'prepareOrder'])->name('orders.prepare');
+    Route::post('/orders/{id}/deliver', [SellerController::class, 'deliverOrder'])->name('orders.deliver');
     Route::post('/orders/{id}/complete', [SellerController::class, 'completeOrder'])->name('orders.complete');
+    Route::post('/orders/{id}/cancel', [SellerController::class, 'cancelOrder'])->name('orders.cancel');
     
     // Profile
     Route::get('/profile', [SellerController::class, 'profile'])->name('profile');

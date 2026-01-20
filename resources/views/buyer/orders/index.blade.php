@@ -29,11 +29,17 @@
                 <td>₱{{ number_format($order->total_amount, 2) }}</td>
                 <td>
                     @if($order->status === 'pending')
-                        <span class="badge badge-warning">Pending</span>
+                        <span class="badge badge-warning">Pending Approval</span>
+                    @elseif($order->status === 'confirmed')
+                        <span class="badge badge-success">Confirmed</span>
+                    @elseif($order->status === 'preparing')
+                        <span class="badge badge-success">Preparing</span>
+                    @elseif($order->status === 'delivered')
+                        <span class="badge badge-success">Delivered</span>
                     @elseif($order->status === 'completed')
                         <span class="badge badge-success">Completed</span>
                     @else
-                        <span class="badge">{{ ucfirst($order->status) }}</span>
+                        <span class="badge badge-danger">Cancelled</span>
                     @endif
                 </td>
                 <td>{{ $order->created_at->format('M d, Y') }}</td>

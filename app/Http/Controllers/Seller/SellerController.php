@@ -20,7 +20,7 @@ class SellerController extends Controller
             'total_listings' => $seller->riceListings()->count(),
             'active_listings' => $seller->riceListings()->where('status', 'active')->count(),
             'total_orders' => $seller->soldOrders()->count(),
-            'pending_orders' => $seller->soldOrders()->where('status', 'pending')->count(),
+            'pending_orders' => $seller->soldOrders()->whereIn('status', ['pending', 'confirmed', 'preparing', 'delivered'])->count(),
         ];
 
         $recentOrders = $seller->soldOrders()->with('buyer', 'riceListing')->latest()->limit(5)->get();
@@ -135,14 +135,63 @@ class SellerController extends Controller
         return view('seller.orders.view', compact('order'));
     }
 
+    public function confirmOrder($id)
+    {
+        $order = Order::where('seller_id', auth()->id())->where('status', 'pending')->findOrFail($id);
+        $order->update(['status' => 'confirmed', 'confirmed_at' => now()]);
+
+        SystemLog::createLog('confirm_order', "Confirmed order: {$order->order_number}", 'seller');
+
+        return back()->with('success', 'Order confirmed successfully');
+    }
+
+    public function prepareOrder($id)
+    {
+        $order = Order::where('seller_id', auth()->id())->where('status', 'confirmed')->findOrFail($id);
+        $order->update(['status' => 'preparing']);
+
+        SystemLog::createLog('prepare_order', "Preparing order: {$order->order_number}", 'seller');
+
+        return back()->with('success', 'Order is now being prepared');
+    }
+
+    public function deliverOrder($id)
+    {
+        $order = Order::where('seller_id', auth()->id())->whereIn('status', ['confirmed', 'preparing'])->findOrFail($id);
+        $order->update(['status' => 'delivered', 'delivered_at' => now()]);
+
+        SystemLog::createLog('deliver_order', "Delivered order: {$order->order_number}", 'seller');
+
+        return back()->with('success', 'Order marked as delivered');
+    }
+
     public function completeOrder($id)
     {
-        $order = Order::where('seller_id', auth()->id())->findOrFail($id);
+        $order = Order::where('seller_id', auth()->id())->where('status', 'delivered')->findOrFail($id);
         $order->markAsCompleted();
 
         SystemLog::createLog('complete_order', "Completed order: {$order->order_number}", 'seller');
 
         return back()->with('success', 'Order marked as completed');
+    }
+
+    public function cancelOrder($id)
+    {
+        $order = Order::where('seller_id', auth()->id())->where('status', 'pending')->findOrFail($id);
+        
+        // Return stock to listing
+        $listing = $order->riceListing;
+        $listing->quantity_available += $order->quantity;
+        if ($listing->status === 'sold_out') {
+            $listing->status = 'active';
+        }
+        $listing->save();
+
+        $order->update(['status' => 'cancelled']);
+
+        SystemLog::createLog('cancel_order', "Cancelled order: {$order->order_number}", 'seller');
+
+        return back()->with('success', 'Order cancelled successfully');
     }
 
     // Profile Management

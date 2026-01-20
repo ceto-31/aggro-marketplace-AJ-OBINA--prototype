@@ -40,11 +40,38 @@
                 </td>
                 <td>{{ $order->created_at->format('M d, Y') }}</td>
                 <td>
-                    @if($order->status !== 'completed')
-                        <form action="{{ route('seller.orders.complete', $order->id) }}" method="POST" onsubmit="return confirm('Mark this order as completed?');">
+                    @if($order->status === 'pending')
+                        <form action="{{ route('seller.orders.confirm', $order->id) }}" method="POST" style="display: inline;">
+                            @csrf
+                            <button type="submit" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.875rem;">Confirm</button>
+                        </form>
+                        <form action="{{ route('seller.orders.cancel', $order->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Cancel this order?');">
+                            @csrf
+                            <button type="submit" class="btn btn-danger" style="padding: 0.5rem 1rem; font-size: 0.875rem;">Cancel</button>
+                        </form>
+                    @elseif($order->status === 'confirmed')
+                        <form action="{{ route('seller.orders.prepare', $order->id) }}" method="POST" style="display: inline;">
+                            @csrf
+                            <button type="submit" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.875rem;">Start Preparing</button>
+                        </form>
+                        <form action="{{ route('seller.orders.deliver', $order->id) }}" method="POST" style="display: inline;">
+                            @csrf
+                            <button type="submit" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.875rem;">Mark Delivered</button>
+                        </form>
+                    @elseif($order->status === 'preparing')
+                        <form action="{{ route('seller.orders.deliver', $order->id) }}" method="POST" style="display: inline;">
+                            @csrf
+                            <button type="submit" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.875rem;">Mark Delivered</button>
+                        </form>
+                    @elseif($order->status === 'delivered')
+                        <form action="{{ route('seller.orders.complete', $order->id) }}" method="POST" style="display: inline;">
                             @csrf
                             <button type="submit" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.875rem;">Mark Complete</button>
                         </form>
+                    @elseif($order->status === 'completed')
+                        <span class="badge badge-success">Done</span>
+                    @else
+                        <span class="badge badge-danger">Cancelled</span>
                     @endif
                 </td>
             </tr>
