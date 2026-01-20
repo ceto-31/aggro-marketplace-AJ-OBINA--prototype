@@ -1,59 +1,259 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# SPUP Agro Marketplace
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A web-based rice trading platform designed for St. Paul University Philippines (SPUP) to connect rice farmers with buyers in Tuguegarao City, Cagayan. The system promotes price transparency and fair market access while supporting users with low digital literacy.
 
-## About Laravel
+## Project Overview
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+This marketplace platform serves three distinct user roles:
+- **SPUP Administrators** - Manage users, validate sellers, and monitor system activities
+- **Sellers (Rice Farmers)** - Create and manage rice listings, fulfill orders
+- **Buyers** - Browse available rice, place orders, and provide feedback
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+The system emphasizes simplicity and transparency, making it accessible to farmers and buyers who may have limited experience with digital platforms.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Technology Stack
 
-## Learning Laravel
+- **Framework**: Laravel 11
+- **Database**: MySQL
+- **Frontend**: Blade templates with custom CSS
+- **Architecture**: MVC (Model-View-Controller)
+- **Authentication**: Laravel's built-in authentication system
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## System Requirements
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- PHP 8.2 or higher
+- MySQL 5.7 or higher
+- Composer
+- WAMP/XAMPP/Laravel Valet (for local development)
 
-## Laravel Sponsors
+## Installation Guide
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 1. Clone the Repository
 
-### Premium Partners
+```bash
+git clone https://github.com/ceto-31/aggro-marketplace-AJ-OBINA--prototype.git
+cd aggro-marketplace-AJ-OBINA--prototype
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### 2. Install Dependencies
 
-## Contributing
+```bash
+composer install
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 3. Environment Configuration
 
-## Code of Conduct
+Copy the example environment file:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+cp .env.example .env
+```
 
-## Security Vulnerabilities
+Configure your database connection in `.env`:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=agro_marketplace
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+### 4. Generate Application Key
+
+```bash
+php artisan key:generate
+```
+
+### 5. Run Migrations
+
+```bash
+php artisan migrate
+```
+
+### 6. Seed Initial Data
+
+```bash
+php artisan db:seed --class=AdminSeeder
+php artisan db:seed --class=TestDataSeeder
+```
+
+This creates the admin account and sample test data (2 sellers with rice listings, 2 buyers).
+
+### 7. Create Storage Link
+
+```bash
+php artisan storage:link
+```
+
+### 8. Start Development Server
+
+```bash
+php artisan serve
+```
+
+Visit http://127.0.0.1:8000 in your browser.
+
+## Default Login Credentials
+
+### Administrator
+- Email: `admin@spup.edu.ph`
+- Password: `admin123`
+
+### Test Sellers
+- Email: `juan@seller.com` / Password: `password`
+- Email: `maria@seller.com` / Password: `password`
+
+### Test Buyers
+- Email: `pedro@buyer.com` / Password: `password`
+- Email: `anna@buyer.com` / Password: `password`
+
+## Key Features
+
+### Administrator Module
+
+Administrators have full system oversight with the ability to:
+
+- Create and manage user accounts internally
+- Validate seller registrations before they can list products
+- Activate or deactivate user accounts as needed
+- View all rice listings and transaction history
+- Generate reports on seller activity, buyer activity, and rice pricing trends
+- Monitor system logs for security and audit purposes
+
+**Important**: Administrator accounts cannot self-register. They must be created by existing administrators through the admin panel.
+
+### Seller Module
+
+Rice farmers who register as sellers go through an approval process:
+
+- Registration requires admin approval before access is granted
+- Create rice listings with variety name, price per kilo, quantity, and location
+- Rice types are entered freely to match local varieties (e.g., "C-18", "Dinorado")
+- Update inventory levels as stock changes
+- Manage orders through a multi-step workflow
+- Maintain profile with barangay and municipality information
+
+**Order Management Flow for Sellers**:
+1. View incoming orders (pending status)
+2. Confirm or cancel the order
+3. Mark as preparing (optional)
+4. Mark as delivered when order is fulfilled
+5. Mark as completed when transaction is done
+
+### Buyer Module
+
+Buyers can register directly and start browsing immediately:
+
+- Browse all available rice listings from verified sellers
+- Filter by rice type, barangay, or municipality
+- Sort sellers by lowest price for price comparison
+- View seller details including location and available stock
+- Place orders with delivery address and contact information
+- Track order status through each stage
+- Submit star ratings and comments after order completion
+
+**Order Status for Buyers**:
+- Pending Approval - Waiting for seller to confirm
+- Confirmed - Seller has accepted the order
+- Preparing - Order is being prepared for delivery
+- Delivered - Order has been delivered
+- Completed - Transaction finished, feedback can be submitted
+- Cancelled - Seller could not fulfill the order
+
+## Registration Rules
+
+This is an important distinction in the system:
+
+- **Sellers and Buyers**: Can self-register through the registration page
+- **Administrators**: Cannot self-register. Must be created by existing admins
+
+Seller registrations are placed in "pending" status and require administrator approval before they can create listings. This validation step ensures only legitimate rice farmers can sell on the platform.
+
+Buyer registrations are immediately approved, allowing them to browse and purchase right away.
+
+## Design Guidelines
+
+The user interface follows a specific color scheme to maintain SPUP branding:
+
+- **50% Green** - Primary actions, headers, navigation, buttons
+- **30% White** - Backgrounds, cards, spacing
+- **20% Black** - Text content, borders, contrast elements
+
+The design intentionally avoids:
+- Excessive bold text formatting
+- Complex navigation patterns
+- Technical jargon in user-facing content
+- Dense information displays
+
+This approach makes the system more accessible to users with varying levels of digital literacy.
+
+## Database Structure
+
+### Core Tables
+
+**users** - Stores all user accounts with role (admin/seller/buyer) and status
+**seller_buyer_profiles** - Extended profile information including location and ratings
+**rice_listings** - Product listings created by sellers
+**orders** - Purchase transactions between buyers and sellers
+**feedback** - Ratings and comments from buyers to sellers
+**system_logs** - Activity logs for audit and monitoring
+
+### Relationships
+
+- A User can have one Profile
+- A Seller (User) has many Rice Listings
+- A Buyer (User) has many Orders
+- A Seller (User) receives many Orders
+- An Order belongs to one Rice Listing
+- An Order can have one Feedback entry
+
+## Development Process
+
+This project was built incrementally following Laravel best practices:
+
+1. **Database Design** - Created migrations with proper field types and relationships
+2. **Models** - Built Eloquent models with relationships and helper methods
+3. **Authentication** - Implemented login/registration with role-based access control
+4. **Middleware** - Created role middleware to protect routes by user type
+5. **Controllers** - Developed controllers for each module following MVC structure
+6. **Views** - Designed Blade templates with consistent styling and user experience
+7. **Testing** - Seeded test data to validate functionality
+8. **Version Control** - Committed progress at logical milestones
+
+Each component was built with separation of concerns in mind. Business logic stays in models, request handling in controllers, and presentation in views.
+
+## Future Enhancements
+
+While the current system is functional, potential improvements could include:
+
+- SMS notifications for order status updates
+- Image uploads for rice listings (currently optional)
+- Advanced search with price range filtering
+- Seller performance analytics dashboard
+- Buyer order history export
+- Mobile-responsive design optimization
+
+## Support and Maintenance
+
+For issues or questions about this system:
+
+- Check the system logs in the admin panel
+- Review Laravel documentation for framework-specific questions
+- Ensure database migrations are up to date
+- Verify file permissions for storage and cache directories
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project was developed as a prototype for St. Paul University Philippines.
+
+## Contributors
+
+Developed by: AJ Obina (ceto-31)
+Email: anicetoakaajobina@gmail.com
+Institution: St. Paul University Philippines
+
+---
+
+This system demonstrates a practical application of Laravel's MVC architecture for solving real-world problems in local agriculture markets. The focus on simplicity and transparency makes it suitable for communities where digital literacy may be limited but the need for fair market access is critical.
